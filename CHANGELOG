@@ -1,0 +1,12 @@
+[!] information
+[*] modify/update
+[+] add
+[-] remove/bugfix
+
+14.05.2012 - version 0.1.1
+    [+] Added on-the-fly projection
+    [+] Added extents calculation
+    [-] Fixed bug where a grid was created even if Cancel was pressed
+
+14.05.2012 - version 0.1
+    [!] First public version

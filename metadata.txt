@@ -1,0 +1,13 @@
+[general]
+name=Grid Overlay
+qgisMinimumVersion=1.7
+description=Overlays a user-definable grid on the map.
+category=Layers
+version=version 0.1.1
+
+icon=icon.png
+experimental=True
+
+[author]
+name=John Donovan
+email=mersey.viking@gmail.com

@@ -1,0 +1,6 @@
+Subdivide gridlines further to make it look good for OTF projection.
+Add cell reference decoration.
+Maybe add subgrids.
+Add a function to return the reference of the cell that the user clicked in.
+Handle antimeridian issues.
+Add optional origin and baseline symbols.
