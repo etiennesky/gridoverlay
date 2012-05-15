@@ -21,6 +21,8 @@
 
 from PyQt4 import QtGui
 from qgis import core, gui
+from qgis.core import QGis
+
 from ui_grid_properties import Ui_GridProperties
 
 class GridPropertiesDialog(QtGui.QDialog):
@@ -37,8 +39,12 @@ class GridPropertiesDialog(QtGui.QDialog):
         self.ui.btnStyle.clicked.connect(self.chooseStyle)
     
     def chooseStyle(self):
-        dlg = gui.QgsSymbolV2SelectorDialog(self.symbol,
-                                            core.QgsStyleV2.defaultStyle(),
-                                            None, False)
+        if QGis.QGIS_VERSION_INT < 10800:
+            dlg = gui.QgsSymbolV2SelectorDialog(self.symbol,
+                                                core.QgsStyleV2.defaultStyle())
+        else:
+            dlg = gui.QgsSymbolV2SelectorDialog(self.symbol,
+                                                core.QgsStyleV2.defaultStyle(),
+                                                None )
         dlg.show()
         dlg.exec_()

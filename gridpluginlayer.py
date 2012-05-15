@@ -23,6 +23,7 @@ import math
 
 from PyQt4 import QtCore, QtGui
 from qgis import core
+from qgis.core import QGis
 
 from gridpropertiesdialog import GridPropertiesDialog
 
@@ -77,7 +78,10 @@ class GridPluginLayer(core.QgsPluginLayer):
                 end = mapToPixel.transform(xform.transform(vertex))
                 polyline.append(QtCore.QPointF(end.x(), end.y()))
 
-            self.symbol.renderPolyline(polyline, renderContext)
+                if QGis.QGIS_VERSION_INT < 10800:
+                    self.symbol.renderPolyline(polyline, renderContext)
+                else:
+                    self.symbol.renderPolyline(polyline, None, renderContext)
 
         self.symbol.stopRender(renderContext)
 
