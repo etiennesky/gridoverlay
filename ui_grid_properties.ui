@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>389</width>
-    <height>293</height>
+    <width>391</width>
+    <height>376</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -369,6 +369,9 @@
          <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
            <layout class="QFormLayout" name="formLayout_2">
+            <property name="fieldGrowthPolicy">
+             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_8">
               <property name="text">
@@ -406,13 +409,49 @@
              <widget class="QSpinBox" name="spinPrecision"/>
             </item>
             <item row="2" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Format</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QComboBox" name="comboLabelFormat">
+              <item>
+               <property name="text">
+                <string>Decimal</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Degrees, decimal minutes</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Degrees, minutes, seconds</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QCheckBox" name="checkHemisphere">
+              <property name="text">
+               <string>Display hemisphere</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
              <widget class="QLabel" name="label_10">
               <property name="text">
                <string>Orientation</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="6" column="1">
              <widget class="QComboBox" name="comboOrientation">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -440,6 +479,91 @@
                 <string>Parallel</string>
                </property>
               </item>
+             </widget>
+            </item>
+            <item row="7" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <item>
+               <widget class="QLabel" name="label_16">
+                <property name="text">
+                 <string>Horizontal</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_17">
+                <property name="text">
+                 <string>Vertical</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="8" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <item>
+               <widget class="QDoubleSpinBox" name="spinXOffsetHorizontal">
+                <property name="minimum">
+                 <double>-99.989999999999995</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="spinXOffsetVertical">
+                <property name="minimum">
+                 <double>-99.989999999999995</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="9" column="1">
+             <layout class="QHBoxLayout" name="horizontalLayout_11">
+              <item>
+               <widget class="QDoubleSpinBox" name="spinYOffsetHorizontal">
+                <property name="minimum">
+                 <double>-99.989999999999995</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="spinYOffsetVertical">
+                <property name="minimum">
+                 <double>-99.989999999999995</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="8" column="0">
+             <widget class="QLabel" name="label_18">
+              <property name="text">
+               <string>X axis offset</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="0">
+             <widget class="QLabel" name="label_19">
+              <property name="text">
+               <string>Y axis offset</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QCheckBox" name="checkLeadingZeros">
+              <property name="text">
+               <string>Display leading zeros</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QCheckBox" name="checkDegreesDiff">
+              <property name="text">
+               <string>Only show degrees if different</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -525,7 +649,15 @@
   <tabstop>btnFont</tabstop>
   <tabstop>spinPrecision</tabstop>
   <tabstop>btnColour</tabstop>
+  <tabstop>comboLabelFormat</tabstop>
+  <tabstop>checkHemisphere</tabstop>
+  <tabstop>checkLeadingZeros</tabstop>
+  <tabstop>checkDegreesDiff</tabstop>
   <tabstop>comboOrientation</tabstop>
+  <tabstop>spinXOffsetHorizontal</tabstop>
+  <tabstop>spinXOffsetVertical</tabstop>
+  <tabstop>spinYOffsetHorizontal</tabstop>
+  <tabstop>spinYOffsetVertical</tabstop>
  </tabstops>
  <resources/>
  <connections>

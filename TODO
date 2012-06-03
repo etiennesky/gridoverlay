@@ -1,5 +1,5 @@
 Subdivide gridlines further to make it look good for OTF projection.
-Add cell reference decoration.
+Add cell reference decoration. - WIP. Need to implement in-cell coordinates.
 Maybe add subgrids.
 Add a function to return the reference of the cell that the user clicked in.
 Handle antimeridian issues.

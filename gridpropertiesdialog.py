@@ -41,18 +41,19 @@ class GridPropertiesDialog(QtGui.QDialog):
         self.ui.btnStyle.clicked.connect(self.chooseStyle)
         self.ui.btnFont.clicked.connect(self.chooseFont)
         self.ui.btnColour.clicked.connect(self.chooseColour)
+        self.ui.comboLabelType.currentIndexChanged.connect(self.disableDegreeFields)
 
         self.symbol = gridlayer.symbol.clone()
-        self.label_attributes = gridlayer.label_attributes
+        self.label_attributes = core.QgsLabelAttributes()
         
         # Store attributes in case the user changes font attributes but cancels the dialog box.
-        self.family = gridlayer.label_attributes.family()
-        self.bold = gridlayer.label_attributes.bold()
-        self.italic = gridlayer.label_attributes.italic()
-        self.underline = gridlayer.label_attributes.underline()
-        self.strikeOut = gridlayer.label_attributes.strikeOut()
-        self.size = gridlayer.label_attributes.size()
-        self.color = gridlayer.label_attributes.color()
+        self.label_attributes.setFamily(gridlayer.label.labelAttributes().family())
+        self.label_attributes.setBold(gridlayer.label.labelAttributes().bold())
+        self.label_attributes.setItalic(gridlayer.label.labelAttributes().italic())
+        self.label_attributes.setUnderline(gridlayer.label.labelAttributes().underline())
+        self.label_attributes.setStrikeOut(gridlayer.label.labelAttributes().strikeOut())
+        self.label_attributes.setSize(gridlayer.label.labelAttributes().size(), core.QgsLabelAttributes.PointUnits)
+        self.label_attributes.setColor(gridlayer.label.labelAttributes().color())
 
         self.ui.boxLabels.setChecked(gridlayer.draw_labels)
         self.ui.editOriginX.setText(str(gridlayer.origin.x()))
@@ -64,6 +65,20 @@ class GridPropertiesDialog(QtGui.QDialog):
         self.ui.spinCellSizeX.setValue(gridlayer.cellSizeX)
         self.ui.spinCellSizeY.setValue(gridlayer.cellSizeY)
         self.ui.spinAngle.setValue(gridlayer.baselineAngle)
+        self.ui.comboLabelType.setCurrentIndex(gridlayer.label_type)
+        self.ui.spinPrecision.setValue(gridlayer.label_precision)
+        self.ui.comboOrientation.setCurrentIndex(gridlayer.label_orientation)
+        
+        self.ui.comboLabelFormat.setCurrentIndex(gridlayer.label_format)
+        self.ui.checkHemisphere.setChecked(gridlayer.label_hemisphere)
+        self.ui.checkLeadingZeros.setChecked(gridlayer.label_leading_zeros)
+        self.ui.checkDegreesDiff.setChecked(gridlayer.label_degrees_diff)
+        self.ui.spinXOffsetHorizontal.setValue(gridlayer.label_xoff_horizontal)
+        self.ui.spinXOffsetVertical.setValue(gridlayer.label_xoff_vertical)
+        self.ui.spinYOffsetHorizontal.setValue(gridlayer.label_yoff_horizontal)
+        self.ui.spinYOffsetVertical.setValue(gridlayer.label_yoff_vertical)
+        
+        self.disableDegreeFields(0)
         
     def accept(self):
         self.gridlayer.origin = core.QgsPoint(float(self.ui.editOriginX.text()), float(self.ui.editOriginY.text()))
@@ -75,18 +90,41 @@ class GridPropertiesDialog(QtGui.QDialog):
         self.gridlayer.cellSizeY = self.ui.spinCellSizeY.value()
         self.gridlayer.baselineAngle = self.ui.spinAngle.value()
         self.gridlayer.draw_labels = self.ui.boxLabels.isChecked()
+        self.gridlayer.label_type = self.ui.comboLabelType.currentIndex()
+        self.gridlayer.label_precision = self.ui.spinPrecision.value()
+        self.gridlayer.label_orientation = self.ui.comboOrientation.currentIndex()
         self.gridlayer.symbol = self.symbol.clone()
-        QtGui.QDialog.accept(self)
 
+        self.gridlayer.label.labelAttributes().setFamily(self.label_attributes.family())
+        self.gridlayer.label.labelAttributes().setBold(self.label_attributes.bold())
+        self.gridlayer.label.labelAttributes().setItalic(self.label_attributes.italic())
+        self.gridlayer.label.labelAttributes().setUnderline(self.label_attributes.underline())
+        self.gridlayer.label.labelAttributes().setStrikeOut(self.label_attributes.strikeOut())
+        self.gridlayer.label.labelAttributes().setSize(self.label_attributes.size(), core.QgsLabelAttributes.PointUnits)
+        self.gridlayer.label.labelAttributes().setColor(self.label_attributes.color())
+
+        if self.gridlayer.label_type == 0 or self.gridlayer.label_type == 2:
+            self.gridlayer.label.setLabelField(core.QgsLabel.Text, 2)
+        elif self.gridlayer.label_type == 1:
+            self.gridlayer.label.setLabelField(core.QgsLabel.Text, 0)
+        
+        self.gridlayer.label.setLabelField(core.QgsLabel.Angle, 1)
+        self.gridlayer.label.setLabelField(core.QgsLabel.Alignment, 3)
+        self.gridlayer.label.setLabelField(core.QgsLabel.XOffset, 4)
+        self.gridlayer.label.setLabelField(core.QgsLabel.YOffset, 5)
+
+        self.gridlayer.label_format = self.ui.comboLabelFormat.currentIndex()
+        self.gridlayer.label_hemisphere = self.ui.checkHemisphere.isChecked()
+        self.gridlayer.label_leading_zeros = self.ui.checkLeadingZeros.isChecked()
+        self.gridlayer.label_degrees_diff = self.ui.checkDegreesDiff.isChecked()
+        self.gridlayer.label_xoff_horizontal = self.ui.spinXOffsetHorizontal.value()
+        self.gridlayer.label_xoff_vertical = self.ui.spinXOffsetVertical.value()
+        self.gridlayer.label_yoff_horizontal = self.ui.spinYOffsetHorizontal.value()
+        self.gridlayer.label_yoff_vertical = self.ui.spinYOffsetVertical.value()
+        
+        QtGui.QDialog.accept(self)
+        
     def reject(self):
-        # Restore original label attributes.
-        self.gridlayer.label_attributes.setFamily(self.family)
-        self.gridlayer.label_attributes.setBold(self.bold)
-        self.gridlayer.label_attributes.setItalic(self.italic)
-        self.gridlayer.label_attributes.setUnderline(self.underline)
-        self.gridlayer.label_attributes.setStrikeOut(self.strikeOut)
-        self.gridlayer.label_attributes.setSize(self.size, core.QgsLabelAttributes.PointUnits)
-        self.gridlayer.label_attributes.setColor(self.color)
         QtGui.QDialog.reject(self)
 
     def chooseStyle(self):
@@ -122,3 +160,23 @@ class GridPropertiesDialog(QtGui.QDialog):
         
         if result == 1:
             self.label_attributes.setColor(dlg.selectedColor())
+
+    def disableDegreeFields(self, index):
+        if index == 1 or index == 2:
+            self.ui.checkDegreesDiff.setEnabled(False)
+            self.ui.comboLabelFormat.setEnabled(False)
+            self.ui.spinPrecision.setEnabled(False)
+            self.ui.checkHemisphere.setEnabled(False)
+            self.ui.checkLeadingZeros.setEnabled(False)
+        elif not self.gridlayer.crs().geographicFlag():
+            self.ui.checkDegreesDiff.setEnabled(False)
+            self.ui.comboLabelFormat.setEnabled(False)
+            self.ui.spinPrecision.setEnabled(True)
+            self.ui.checkHemisphere.setEnabled(False)
+            self.ui.checkLeadingZeros.setEnabled(False)
+        else:
+            self.ui.checkDegreesDiff.setEnabled(True)
+            self.ui.comboLabelFormat.setEnabled(True)
+            self.ui.spinPrecision.setEnabled(True)
+            self.ui.checkHemisphere.setEnabled(True)
+            self.ui.checkLeadingZeros.setEnabled(True)
